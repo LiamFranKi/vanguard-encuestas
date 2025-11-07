@@ -1,0 +1,270 @@
+.resultados-page {
+  min-height: 100vh;
+  background-color: #f3f4f6;
+  padding: 40px 0;
+}
+
+.resultados-header {
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 32px;
+}
+
+.btn-back {
+  display: inline-block;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 16px;
+  transition: opacity 0.3s ease;
+}
+
+.btn-back:hover {
+  opacity: 0.7;
+}
+
+.resultados-titulo {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--dark-color);
+  margin-bottom: 8px;
+}
+
+.resultados-descripcion {
+  font-size: 16px;
+  color: var(--text-light);
+}
+
+.resultados-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+  gap: 12px;
+}
+
+.resumen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.resumen-card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.resumen-icon {
+  font-size: 48px;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e0f2fe 0%, #f0e7ff 100%);
+  border-radius: 12px;
+}
+
+.resumen-content h3 {
+  font-size: 14px;
+  color: var(--text-light);
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.resumen-number {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--dark-color);
+  margin: 0;
+}
+
+.resumen-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--dark-color);
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.card-body {
+  padding: 24px;
+}
+
+.grados-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.grado-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: var(--light-color);
+  border-radius: 8px;
+}
+
+.grado-nombre {
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+.grado-cantidad {
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+.preguntas-resultados {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.pregunta-resultado-card {
+  background: white;
+}
+
+.chart-container {
+  max-width: 600px;
+  height: 300px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.escala-promedio {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #e0f2fe 0%, #f0e7ff 100%);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.promedio-label {
+  font-size: 14px;
+  color: var(--text-light);
+  margin-right: 8px;
+  font-weight: 600;
+}
+
+.promedio-valor {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0 8px;
+}
+
+.promedio-total {
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.respuestas-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.respuesta-texto-item {
+  padding: 16px;
+  background-color: var(--light-color);
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-color);
+}
+
+.respuesta-texto-item p {
+  margin: 0 0 8px 0;
+  color: var(--dark-color);
+  line-height: 1.6;
+}
+
+.respuesta-texto-item small {
+  color: var(--text-light);
+  font-size: 12px;
+}
+
+.paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.btn-pag {
+  padding: 8px 16px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-pag:hover:not(:disabled) {
+  background-color: #1565c0;
+  transform: translateY(-2px);
+}
+
+.btn-pag:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.pag-info {
+  font-size: 14px;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .resultados-page {
+    padding: 20px 0;
+  }
+
+  .resultados-header {
+    padding: 20px;
+  }
+
+  .resultados-titulo {
+    font-size: 24px;
+  }
+
+  .resumen-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .resumen-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .chart-container {
+    height: 250px;
+    padding: 10px;
+  }
+
+  .paginacion {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn-pag {
+    width: 100%;
+  }
+}
+

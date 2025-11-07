@@ -1,0 +1,46 @@
+# Configuración de Nginx para Encuestas Vanguard
+# Archivo: /etc/nginx/sites-available/encuestas
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name encuestas.vanguardschools.com;
+
+    root /var/www/encuestas/frontend/dist;
+    index index.html;
+
+    client_max_body_size 10M;
+
+    # Frontend estático
+    location / {
+        try_files $uri $uri/ /index.html;
+        add_header Cache-Control "public, max-age=3600";
+    }
+
+    # API Backend
+    location /api/ {
+        proxy_pass http://localhost:5002;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # Uploads (si hay logos o archivos)
+    location /uploads/ {
+        alias /var/www/encuestas/backend/uploads/;
+        add_header Cache-Control "public, max-age=31536000";
+    }
+}
+
+# INSTRUCCIONES:
+# 1. Copiar este contenido a: /etc/nginx/sites-available/encuestas
+# 2. Crear symlink: sudo ln -s /etc/nginx/sites-available/encuestas /etc/nginx/sites-enabled/
+# 3. Probar configuración: sudo nginx -t
+# 4. Recargar Nginx: sudo systemctl reload nginx
+# 5. Configurar SSL: sudo certbot --nginx -d encuestas.vanguardschools.com
+

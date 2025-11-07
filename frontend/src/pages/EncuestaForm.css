@@ -1,0 +1,207 @@
+.encuesta-form-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e0f2fe 0%, #f0e7ff 100%);
+  padding: 40px 0;
+}
+
+.loading-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.grado-selector {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.grado-selector h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: var(--dark-color);
+}
+
+.preguntas-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.encuesta-titulo-main {
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 12px;
+  color: var(--dark-color);
+}
+
+.encuesta-descripcion-main {
+  font-size: 18px;
+  text-align: center;
+  color: var(--text-light);
+  margin-bottom: 40px;
+}
+
+.pregunta-card {
+  background: white;
+  padding: 32px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pregunta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.pregunta-numero {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.obligatoria {
+  color: var(--danger-color);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.pregunta-texto {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.pregunta-subtitulo {
+  font-size: 14px;
+  color: var(--text-light);
+  margin-bottom: 16px;
+}
+
+.pregunta-respuesta {
+  margin-top: 20px;
+}
+
+.opciones-marcar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.opcion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.opcion-item:hover {
+  border-color: var(--primary-color);
+  background-color: #f0f9ff;
+}
+
+.opcion-item input[type="radio"],
+.opcion-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.opcion-item span {
+  font-size: 16px;
+  flex: 1;
+}
+
+.escala-container {
+  text-align: center;
+}
+
+.escala-botones {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.escala-btn {
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--border-color);
+  background: white;
+  border-radius: 12px;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.escala-btn:hover {
+  border-color: var(--primary-color);
+  background-color: #f0f9ff;
+}
+
+.escala-btn.activo {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.escala-etiquetas {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.form-actions {
+  margin-top: 40px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .encuesta-form-page {
+    padding: 20px 0;
+  }
+
+  .grado-selector,
+  .pregunta-card {
+    padding: 24px;
+  }
+
+  .encuesta-titulo-main {
+    font-size: 28px;
+  }
+
+  .pregunta-texto {
+    font-size: 18px;
+  }
+
+  .escala-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  .escala-botones {
+    gap: 8px;
+  }
+}
+

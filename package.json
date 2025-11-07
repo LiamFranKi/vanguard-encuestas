@@ -1,0 +1,28 @@
+{
+  "name": "vanguard-encuestas",
+  "version": "1.0.0",
+  "description": "Sistema de Encuestas para Padres de Familia - Vanguard Schools",
+  "main": "index.js",
+  "scripts": {
+    "install-all": "cd backend && npm install && cd ../frontend && npm install",
+    "dev-backend": "cd backend && npm run dev",
+    "dev-frontend": "cd frontend && npm run dev",
+    "build-frontend": "cd frontend && npm run build",
+    "start-backend": "cd backend && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiamFranKi/vanguard-encuestas.git"
+  },
+  "keywords": [
+    "encuestas",
+    "vanguard",
+    "schools",
+    "react",
+    "node",
+    "postgresql"
+  ],
+  "author": "Vanguard Schools",
+  "license": "ISC"
+}
+
