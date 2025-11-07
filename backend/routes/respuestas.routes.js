@@ -11,12 +11,29 @@ router.post('/guardar', async (req, res) => {
 
     const { encuesta_id, grado_seleccionado, respuestas, ip_address, user_agent } = req.body;
 
+    // Obtener IP real del usuario (considerando proxy de Nginx)
+    const userIp = ip_address || req.headers['x-forwarded-for']?.split(',')[0] || req.ip;
+
+    // Verificar si esta IP ya respondió esta encuesta
+    const checkDuplicate = await client.query(
+      'SELECT id FROM respuestas WHERE encuesta_id = $1 AND ip_address = $2',
+      [encuesta_id, userIp]
+    );
+
+    if (checkDuplicate.rows.length > 0) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({
+        success: false,
+        message: 'Ya has respondido esta encuesta anteriormente. Solo se permite una respuesta por persona.'
+      });
+    }
+
     // Insertar respuesta principal
     const respuestaResult = await client.query(
       `INSERT INTO respuestas (encuesta_id, grado_seleccionado, ip_address, user_agent)
        VALUES ($1, $2, $3, $4)
        RETURNING *`,
-      [encuesta_id, grado_seleccionado, ip_address, user_agent]
+      [encuesta_id, grado_seleccionado, userIp, user_agent]
     );
 
     const respuestaId = respuestaResult.rows[0].id;

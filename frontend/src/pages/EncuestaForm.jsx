@@ -122,7 +122,13 @@ const EncuestaForm = () => {
 
       navigate('/gracias', { state: { mensaje: encuesta.mensaje_agradecimiento } });
     } catch (error) {
-      Swal.fire('Error', 'No se pudo guardar la respuesta', 'error');
+      const mensaje = error.response?.data?.message || 'No se pudo guardar la respuesta';
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: mensaje,
+        confirmButtonText: 'Entendido'
+      });
     } finally {
       setEnviando(false);
     }
