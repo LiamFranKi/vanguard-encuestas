@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { getEncuestasAdmin, cambiarEstadoEncuesta, eliminarEncuesta } from '../../services/api';
+import AdminNavbar from '../../components/AdminNavbar';
 import Swal from 'sweetalert2';
 import './AdminDashboard.css';
 
@@ -9,7 +10,7 @@ const AdminDashboard = () => {
   const [encuestas, setEncuestas] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const { usuario, isAuthenticated, logout } = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -91,11 +92,6 @@ const AdminDashboard = () => {
     return badges[estado] || 'badge-info';
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/admin/login');
-  };
-
   if (loading) {
     return (
       <div className="loading-container">
@@ -107,23 +103,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-dashboard">
-      {/* Navbar */}
-      <nav className="admin-navbar">
-        <div className="container">
-          <div className="navbar-content">
-            <h2 className="navbar-title">📊 Vanguard Encuestas - Admin</h2>
-            <div className="navbar-user">
-              <Link to="/admin/grados" className="btn-link-navbar">
-                📚 Grados
-              </Link>
-              <span>👤 {usuario?.nombres} {usuario?.apellidos}</span>
-              <button onClick={handleLogout} className="btn-logout">
-                Cerrar Sesión
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <AdminNavbar />
 
       {/* Dashboard Content */}
       <div className="container py-4">

@@ -1,0 +1,120 @@
+.configuracion-page {
+  min-height: 100vh;
+  background-color: #f3f4f6;
+}
+
+.config-header {
+  margin-bottom: 24px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.color-input-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.color-picker {
+  width: 60px;
+  height: 42px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.color-picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.color-picker::-webkit-color-swatch {
+  border: none;
+  border-radius: 6px;
+}
+
+.color-preview {
+  margin-top: 24px;
+}
+
+.preview-box {
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  background-color: var(--light-color);
+}
+
+.preview-gradient {
+  height: 150px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.preview-gradient span {
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.preview-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.preview-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  cursor: default;
+  font-size: 14px;
+}
+
+.config-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 32px;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  padding: 24px;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .config-actions {
+    flex-direction: column;
+  }
+
+  .config-actions a,
+  .config-actions button {
+    width: 100%;
+  }
+
+  .preview-buttons {
+    flex-direction: column;
+  }
+
+  .preview-btn {
+    width: 100%;
+  }
+}
+

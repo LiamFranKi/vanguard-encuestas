@@ -95,5 +95,37 @@ export const borrarRespuestas = async (id) => {
   return response.data;
 };
 
+// Admin - Usuarios
+export const getUsuarios = async () => {
+  const response = await api.get('/usuarios');
+  return response.data;
+};
+
+export const crearUsuario = async (data) => {
+  const response = await api.post('/usuarios', data);
+  return response.data;
+};
+
+export const actualizarUsuario = async (id, data) => {
+  const response = await api.put(`/usuarios/${id}`, data);
+  return response.data;
+};
+
+export const eliminarUsuario = async (id) => {
+  const response = await api.delete(`/usuarios/${id}`);
+  return response.data;
+};
+
+// Configuración del Sistema
+export const getConfiguracion = async () => {
+  const response = await api.get('/config');
+  return response.data;
+};
+
+export const actualizarConfiguracion = async (data) => {
+  const response = await api.put('/config', data);
+  return response.data;
+};
+
 export default api;
 

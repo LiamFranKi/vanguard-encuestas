@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { getGradosAdmin, crearGrado, actualizarGrado, eliminarGrado } from '../../services/api';
+import AdminNavbar from '../../components/AdminNavbar';
 import Swal from 'sweetalert2';
 import './Grados.css';
 
@@ -17,7 +18,7 @@ const Grados = () => {
     activo: true
   });
 
-  const { usuario, isAuthenticated, logout } = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -111,11 +112,6 @@ const Grados = () => {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/admin/login');
-  };
-
   if (loading) {
     return (
       <div className="loading-container">
@@ -127,28 +123,10 @@ const Grados = () => {
 
   return (
     <div className="grados-page">
-      {/* Navbar */}
-      <nav className="admin-navbar">
-        <div className="container">
-          <div className="navbar-content">
-            <h2 className="navbar-title">📚 Gestión de Grados</h2>
-            <div className="navbar-user">
-              <span>👤 {usuario?.nombres} {usuario?.apellidos}</span>
-              <button onClick={handleLogout} className="btn-logout">
-                Cerrar Sesión
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <AdminNavbar />
 
       {/* Content */}
       <div className="container py-4">
-        <div className="grados-header">
-          <Link to="/admin/dashboard" className="btn-back">
-            ← Volver al Dashboard
-          </Link>
-        </div>
 
         <div className="card">
           <div className="card-header">

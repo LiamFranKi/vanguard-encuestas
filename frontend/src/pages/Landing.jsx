@@ -1,22 +1,39 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getEncuestasPublicas } from '../services/api';
+import { getEncuestasPublicas, getConfiguracion } from '../services/api';
 import './Landing.css';
 
 const Landing = () => {
   const [encuestas, setEncuestas] = useState([]);
+  const [config, setConfig] = useState({
+    nombre_sistema: 'Vanguard Encuestas',
+    descripcion_sistema: 'Tu opinión nos ayuda a mejorar la educación',
+    color_primario: '#1976d2',
+    color_secundario: '#7c3aed'
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    cargarEncuestas();
+    cargarDatos();
   }, []);
 
-  const cargarEncuestas = async () => {
+  useEffect(() => {
+    // Actualizar título de la página
+    document.title = config.nombre_sistema || 'Vanguard Encuestas';
+  }, [config]);
+
+  const cargarDatos = async () => {
     try {
-      const data = await getEncuestasPublicas();
-      setEncuestas(data.encuestas);
+      const [encuestasData, configData] = await Promise.all([
+        getEncuestasPublicas(),
+        getConfiguracion()
+      ]);
+      setEncuestas(encuestasData.encuestas);
+      if (configData.configuracion) {
+        setConfig(configData.configuracion);
+      }
     } catch (error) {
-      console.error('Error al cargar encuestas:', error);
+      console.error('Error al cargar datos:', error);
     } finally {
       setLoading(false);
     }
@@ -25,13 +42,18 @@ const Landing = () => {
   return (
     <div className="landing">
       {/* Hero Section */}
-      <section className="hero">
+      <section 
+        className="hero"
+        style={{
+          background: `linear-gradient(135deg, ${config.color_primario} 0%, ${config.color_secundario} 100%)`
+        }}
+      >
         <div className="container">
           <div className="hero-content">
             <div className="hero-icon">📋</div>
-            <h1 className="hero-title">Encuestas Vanguard Schools</h1>
+            <h1 className="hero-title">{config.nombre_sistema}</h1>
             <p className="hero-subtitle">
-              Tu opinión nos ayuda a mejorar la educación
+              {config.descripcion_sistema}
             </p>
           </div>
         </div>
@@ -80,7 +102,7 @@ const Landing = () => {
       <footer className="footer">
         <div className="container">
           <div className="footer-content">
-            <p>&copy; 2025 Vanguard Schools. Todos los derechos reservados.</p>
+            <p>&copy; {new Date().getFullYear()} Todos los derechos reservados.</p>
             <Link to="/admin/login" className="footer-link">
               Administrar
             </Link>

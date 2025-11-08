@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getEncuesta, getGrados, guardarRespuesta } from '../services/api';
 import Swal from 'sweetalert2';
 import './EncuestaForm.css';
@@ -148,6 +148,9 @@ const EncuestaForm = () => {
       <div className="container">
         {paso === 1 && encuesta.solicitar_grado && (
           <div className="grado-selector">
+            <Link to="/" className="btn-volver">
+              ← Volver al inicio
+            </Link>
             <h2>Selecciona el grado de tu hijo(a)</h2>
             <div className="form-group">
               <select
@@ -171,6 +174,9 @@ const EncuestaForm = () => {
 
         {paso === 2 && (
           <div className="preguntas-container">
+            <Link to="/" className="btn-volver">
+              ← Volver al inicio
+            </Link>
             <h1 className="encuesta-titulo-main">{encuesta.titulo}</h1>
             <p className="encuesta-descripcion-main">{encuesta.descripcion}</p>
 

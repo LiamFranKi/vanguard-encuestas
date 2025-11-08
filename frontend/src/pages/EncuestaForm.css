@@ -21,6 +21,20 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.btn-volver {
+  display: inline-block;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 20px;
+  font-size: 14px;
+  transition: opacity 0.3s ease;
+}
+
+.btn-volver:hover {
+  opacity: 0.7;
+}
+
 .grado-selector h2 {
   text-align: center;
   margin-bottom: 24px;

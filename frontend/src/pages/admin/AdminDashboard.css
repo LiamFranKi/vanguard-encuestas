@@ -3,67 +3,7 @@
   background-color: #f3f4f6;
 }
 
-.admin-navbar {
-  background: linear-gradient(135deg, #1976d2 0%, #7c3aed 100%);
-  color: white;
-  padding: 20px 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.navbar-title {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0;
-}
-
-.navbar-user {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.navbar-user span {
-  font-size: 14px;
-}
-
-.btn-link-navbar {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.btn-link-navbar:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-}
-
-.btn-logout {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.btn-logout:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-}
+/* Estilos del navbar movidos a AdminNavbar.css */
 
 .stats-grid {
   display: grid;
@@ -178,15 +118,6 @@
 }
 
 @media (max-width: 768px) {
-  .navbar-content {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .navbar-title {
-    font-size: 20px;
-  }
-
   .stats-grid {
     grid-template-columns: 1fr;
   }

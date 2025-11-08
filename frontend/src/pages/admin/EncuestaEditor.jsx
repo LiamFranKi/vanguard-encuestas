@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { getEncuesta, crearEncuesta, actualizarEncuesta } from '../../services/api';
+import AdminNavbar from '../../components/AdminNavbar';
 import Swal from 'sweetalert2';
 import './EncuestaEditor.css';
 
@@ -155,11 +156,10 @@ const EncuestaEditor = () => {
 
   return (
     <div className="encuesta-editor-page">
+      <AdminNavbar />
+      
       <div className="container py-4">
         <div className="editor-header">
-          <Link to="/admin/dashboard" className="btn-back">
-            ← Volver al Dashboard
-          </Link>
           <h1>{id ? 'Editar Encuesta' : 'Nueva Encuesta'}</h1>
         </div>
 

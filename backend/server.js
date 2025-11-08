@@ -45,6 +45,8 @@ app.use('/api/encuestas', require('./routes/encuestas.routes'));
 app.use('/api/respuestas', require('./routes/respuestas.routes'));
 app.use('/api/resultados', require('./routes/resultados.routes'));
 app.use('/api/grados', require('./routes/grados.routes'));
+app.use('/api/usuarios', require('./routes/usuarios.routes'));
+app.use('/api/config', require('./routes/config.routes'));
 
 // Ruta de salud
 app.get('/api/health', (req, res) => {

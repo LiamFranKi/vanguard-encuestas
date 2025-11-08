@@ -12,6 +12,8 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import EncuestaResultados from './pages/admin/EncuestaResultados';
 import EncuestaEditor from './pages/admin/EncuestaEditor';
 import Grados from './pages/admin/Grados';
+import Usuarios from './pages/admin/Usuarios';
+import Configuracion from './pages/admin/Configuracion';
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
           <Route path="/admin/encuesta/editar/:id" element={<EncuestaEditor />} />
           <Route path="/admin/resultados/:id" element={<EncuestaResultados />} />
           <Route path="/admin/grados" element={<Grados />} />
+          <Route path="/admin/usuarios" element={<Usuarios />} />
+          <Route path="/admin/configuracion" element={<Configuracion />} />
         </Routes>
       </Router>
     </AuthProvider>

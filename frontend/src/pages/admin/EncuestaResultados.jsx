@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { getResultados, borrarRespuestas } from '../../services/api';
+import AdminNavbar from '../../components/AdminNavbar';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import Swal from 'sweetalert2';
@@ -135,12 +136,11 @@ const EncuestaResultados = () => {
 
   return (
     <div className="resultados-page">
+      <AdminNavbar />
+      
       <div className="container py-4">
         {/* Header */}
         <div className="resultados-header">
-          <Link to="/admin/dashboard" className="btn-back">
-            ← Volver al Dashboard
-          </Link>
           <h1 className="resultados-titulo">{encuesta.titulo}</h1>
           <p className="resultados-descripcion">{encuesta.descripcion}</p>
         </div>
