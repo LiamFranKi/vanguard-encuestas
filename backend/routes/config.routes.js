@@ -13,8 +13,8 @@ router.get('/', async (req, res) => {
     if (result.rows.length === 0) {
       // Si no existe, crear configuración por defecto
       const insertResult = await pool.query(
-        `INSERT INTO configuracion_sistema (nombre_sistema, descripcion_sistema, color_primario, color_secundario)
-         VALUES ('Vanguard Encuestas', 'Tu opinión nos ayuda a mejorar la educación', '#1976d2', '#7c3aed')
+        `INSERT INTO configuracion_sistema (nombre_sistema, descripcion_sistema, color_primario, color_secundario, restringir_respuesta_por_ip)
+         VALUES ('Vanguard Encuestas', 'Tu opinión nos ayuda a mejorar la educación', '#1976d2', '#7c3aed', false)
          RETURNING *`
       );
       return res.json({
@@ -47,7 +47,8 @@ router.put('/', authMiddleware, async (req, res) => {
       email_sistema,
       telefono_sistema,
       direccion_sistema,
-      logo
+      logo,
+      restringir_respuesta_por_ip
     } = req.body;
 
     // Verificar si existe configuración
@@ -59,20 +60,20 @@ router.put('/', authMiddleware, async (req, res) => {
       // Crear si no existe
       result = await pool.query(
         `INSERT INTO configuracion_sistema 
-         (nombre_sistema, descripcion_sistema, color_primario, color_secundario, email_sistema, telefono_sistema, direccion_sistema, logo)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+         (nombre_sistema, descripcion_sistema, color_primario, color_secundario, email_sistema, telefono_sistema, direccion_sistema, logo, restringir_respuesta_por_ip)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
          RETURNING *`,
-        [nombre_sistema, descripcion_sistema, color_primario, color_secundario, email_sistema, telefono_sistema, direccion_sistema, logo]
+        [nombre_sistema, descripcion_sistema, color_primario, color_secundario, email_sistema, telefono_sistema, direccion_sistema, logo, restringir_respuesta_por_ip]
       );
     } else {
       // Actualizar si existe
       result = await pool.query(
         `UPDATE configuracion_sistema 
          SET nombre_sistema = $1, descripcion_sistema = $2, color_primario = $3, color_secundario = $4,
-             email_sistema = $5, telefono_sistema = $6, direccion_sistema = $7, logo = $8, updated_at = NOW()
-         WHERE id = $9
+             email_sistema = $5, telefono_sistema = $6, direccion_sistema = $7, logo = $8, restringir_respuesta_por_ip = $9, updated_at = NOW()
+         WHERE id = $10
          RETURNING *`,
-        [nombre_sistema, descripcion_sistema, color_primario, color_secundario, email_sistema, telefono_sistema, direccion_sistema, logo, existing.rows[0].id]
+        [nombre_sistema, descripcion_sistema, color_primario, color_secundario, email_sistema, telefono_sistema, direccion_sistema, logo, restringir_respuesta_por_ip, existing.rows[0].id]
       );
     }
 
@@ -91,4 +92,5 @@ router.put('/', authMiddleware, async (req, res) => {
 });
 
 module.exports = router;
+
 

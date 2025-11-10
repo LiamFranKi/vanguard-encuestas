@@ -6,6 +6,8 @@ import AdminNavbar from '../../components/AdminNavbar';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import Swal from 'sweetalert2';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import './EncuestaResultados.css';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
@@ -125,6 +127,253 @@ const EncuestaResultados = () => {
     }
   };
 
+  const handleExportarPDF = async () => {
+    try {
+      Swal.fire({
+        title: 'Generando PDF...',
+        html: 'Por favor espera, estamos capturando los gráficos y resultados<br><small>Esto puede tomar unos segundos</small>',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      // Crear PDF
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 15;
+      let currentY = margin;
+
+      // PÁGINA 1: PORTADA Y RESUMEN
+      pdf.setFillColor(25, 118, 210);
+      pdf.rect(0, 0, pageWidth, 60, 'F');
+      
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(24);
+      pdf.setFont(undefined, 'bold');
+      pdf.text('RESULTADOS DE ENCUESTA', pageWidth / 2, 25, { align: 'center' });
+      
+      pdf.setFontSize(16);
+      pdf.setFont(undefined, 'normal');
+      const tituloLines = pdf.splitTextToSize(encuesta.titulo, pageWidth - 40);
+      pdf.text(tituloLines, pageWidth / 2, 40, { align: 'center' });
+
+      currentY = 75;
+      pdf.setTextColor(0, 0, 0);
+
+      // Información General
+      pdf.setFontSize(14);
+      pdf.setFont(undefined, 'bold');
+      pdf.text('INFORMACION GENERAL', margin, currentY);
+      currentY += 10;
+
+      pdf.setFontSize(10);
+      pdf.setFont(undefined, 'normal');
+      pdf.text(`Estado: ${encuesta.estado}`, margin, currentY);
+      currentY += 6;
+      pdf.text(`Fecha Inicio: ${encuesta.fecha_inicio ? new Date(encuesta.fecha_inicio).toLocaleDateString() : 'N/A'}`, margin, currentY);
+      currentY += 6;
+      pdf.text(`Total de Respuestas: ${totalRespuestas}`, margin, currentY);
+      currentY += 6;
+      pdf.text(`Fecha de Exportacion: ${new Date().toLocaleString()}`, margin, currentY);
+      currentY += 15;
+
+      // Respuestas por Grado
+      if (respuestasPorGrado.length > 0) {
+        pdf.setFontSize(14);
+        pdf.setFont(undefined, 'bold');
+        pdf.text('RESPUESTAS POR GRADO', margin, currentY);
+        currentY += 10;
+
+        pdf.setFontSize(10);
+        pdf.setFont(undefined, 'normal');
+        respuestasPorGrado.forEach(grado => {
+          const porcentaje = ((grado.cantidad / totalRespuestas) * 100).toFixed(1);
+          pdf.text(`• ${grado.grado_seleccionado}: ${grado.cantidad} respuestas (${porcentaje}%)`, margin + 5, currentY);
+          currentY += 6;
+        });
+      }
+
+      // PÁGINAS SIGUIENTES: PREGUNTAS CON GRÁFICOS
+      for (let i = 0; i < resultadosPreguntas.length; i++) {
+        const resultado = resultadosPreguntas[i];
+        
+        // Nueva página para cada pregunta
+        pdf.addPage();
+        currentY = margin;
+
+        // Título de la pregunta
+        pdf.setFillColor(124, 58, 237);
+        pdf.rect(0, 0, pageWidth, 30, 'F');
+        
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFontSize(12);
+        pdf.setFont(undefined, 'bold');
+        pdf.text(`PREGUNTA ${resultado.orden}`, pageWidth / 2, 12, { align: 'center' });
+        
+        pdf.setFontSize(11);
+        pdf.setFont(undefined, 'normal');
+        const preguntaLines = pdf.splitTextToSize(resultado.texto_pregunta, pageWidth - 30);
+        pdf.text(preguntaLines, pageWidth / 2, 22, { align: 'center' });
+
+        currentY = 45;
+        pdf.setTextColor(0, 0, 0);
+
+        // Tipo de pregunta
+        pdf.setFontSize(9);
+        pdf.setTextColor(100, 100, 100);
+        pdf.text(`Tipo: ${resultado.tipo_respuesta}`, margin, currentY);
+        currentY += 10;
+        pdf.setTextColor(0, 0, 0);
+
+        // Capturar gráfico si existe
+        if (resultado.tipo_respuesta === 'marcar' || resultado.tipo_respuesta === 'lista' || resultado.tipo_respuesta === 'escala') {
+          const chartElements = document.querySelectorAll('.pregunta-resultado-card');
+          if (chartElements[i]) {
+            const chartElement = chartElements[i].querySelector('.chart-container');
+            if (chartElement) {
+              try {
+                const canvas = await html2canvas(chartElement, {
+                  scale: 2,
+                  backgroundColor: '#ffffff',
+                  logging: false
+                });
+                
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = pageWidth - (2 * margin);
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                if (currentY + imgHeight > pageHeight - margin) {
+                  pdf.addPage();
+                  currentY = margin;
+                }
+                
+                pdf.addImage(imgData, 'PNG', margin, currentY, imgWidth, imgHeight);
+                currentY += imgHeight + 10;
+              } catch (error) {
+                console.error('Error al capturar gráfico:', error);
+              }
+            }
+          }
+
+          // Agregar datos numéricos
+          if (resultado.tipo_respuesta === 'escala') {
+            pdf.setFontSize(11);
+            pdf.setFont(undefined, 'bold');
+            pdf.text(`Promedio: ${resultado.datos.promedio}`, margin, currentY);
+            currentY += 6;
+            pdf.setFont(undefined, 'normal');
+            pdf.text(`Total de respuestas: ${resultado.datos.total}`, margin, currentY);
+            currentY += 10;
+          }
+
+          // Tabla de datos
+          if (resultado.tipo_respuesta === 'marcar' || resultado.tipo_respuesta === 'lista') {
+            pdf.setFontSize(9);
+            pdf.setFont(undefined, 'bold');
+            pdf.text('Opción', margin, currentY);
+            pdf.text('Cantidad', margin + 110, currentY);
+            pdf.text('%', margin + 150, currentY);
+            currentY += 5;
+
+            pdf.setFont(undefined, 'normal');
+            const datos = resultado.datos;
+            Object.entries(datos).forEach(([opcion, cantidad]) => {
+              const porcentaje = ((cantidad / totalRespuestas) * 100).toFixed(1);
+              const opcionText = pdf.splitTextToSize(opcion, 100);
+              pdf.text(opcionText, margin, currentY);
+              pdf.text(cantidad.toString(), margin + 110, currentY);
+              pdf.text(`${porcentaje}%`, margin + 150, currentY);
+              currentY += 6 * opcionText.length;
+            });
+          }
+        }
+
+        // Respuestas de texto
+        if (resultado.tipo_respuesta === 'texto_corto' || resultado.tipo_respuesta === 'texto_largo') {
+          pdf.setFontSize(11);
+          pdf.setFont(undefined, 'bold');
+          pdf.text('Respuestas:', margin, currentY);
+          currentY += 8;
+
+          pdf.setFontSize(9);
+          pdf.setFont(undefined, 'normal');
+
+          // MOSTRAR TODAS las respuestas (sin límite)
+          const respuestas = resultado.datos.respuestas;
+          respuestas.forEach((resp, idx) => {
+            // Verificar espacio antes de cada respuesta
+            if (currentY > pageHeight - 40) {
+              pdf.addPage();
+              currentY = margin;
+              
+              // Repetir título en nueva página
+              pdf.setFontSize(10);
+              pdf.setFont(undefined, 'bold');
+              pdf.setTextColor(100, 100, 100);
+              pdf.text(`PREGUNTA ${resultado.orden} (continuacion)`, margin, currentY);
+              currentY += 8;
+              pdf.setTextColor(0, 0, 0);
+              pdf.setFontSize(9);
+              pdf.setFont(undefined, 'normal');
+            }
+
+            pdf.setFont(undefined, 'bold');
+            pdf.text(`${idx + 1}. ${new Date(resp.fecha_respuesta).toLocaleDateString()}`, margin, currentY);
+            currentY += 5;
+            
+            pdf.setFont(undefined, 'normal');
+            const respuestaLines = pdf.splitTextToSize(resp.texto_respuesta, pageWidth - (2 * margin));
+            
+            // Verificar si la respuesta completa cabe en la página
+            const alturaRespuesta = respuestaLines.length * 4;
+            if (currentY + alturaRespuesta > pageHeight - margin) {
+              pdf.addPage();
+              currentY = margin;
+              
+              // Repetir número y fecha en nueva página
+              pdf.setFont(undefined, 'bold');
+              pdf.text(`${idx + 1}. ${new Date(resp.fecha_respuesta).toLocaleDateString()} (cont.)`, margin, currentY);
+              currentY += 5;
+              pdf.setFont(undefined, 'normal');
+            }
+            
+            pdf.text(respuestaLines, margin + 3, currentY);
+            currentY += alturaRespuesta + 6;
+          });
+
+          // Mostrar total de respuestas
+          if (respuestas.length > 0) {
+            if (currentY > pageHeight - 30) {
+              pdf.addPage();
+              currentY = margin;
+            }
+            pdf.setFont(undefined, 'bold');
+            pdf.setTextColor(25, 118, 210);
+            pdf.text(`Total: ${respuestas.length} respuestas`, margin, currentY);
+            pdf.setTextColor(0, 0, 0);
+          }
+        }
+      }
+
+      // Guardar PDF
+      const fileName = `Resultados_${encuesta.titulo.replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}.pdf`;
+      pdf.save(fileName);
+
+      Swal.fire({
+        icon: 'success',
+        title: '¡PDF Generado!',
+        text: 'El archivo se ha descargado correctamente',
+        timer: 2000,
+        showConfirmButton: false
+      });
+    } catch (error) {
+      console.error('Error al exportar a PDF:', error);
+      Swal.fire('Error', 'No se pudo generar el PDF. Por favor intenta nuevamente.', 'error');
+    }
+  };
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -148,12 +397,20 @@ const EncuestaResultados = () => {
         {/* Botones de acción */}
         <div className="resultados-actions">
           {totalRespuestas > 0 && (
-            <button 
-              className="btn btn-danger"
-              onClick={handleBorrarRespuestas}
-            >
-              🗑️ Borrar Todas las Respuestas
-            </button>
+            <>
+              <button 
+                className="btn btn-success"
+                onClick={handleExportarPDF}
+              >
+                Exportar a PDF
+              </button>
+              <button 
+                className="btn btn-danger"
+                onClick={handleBorrarRespuestas}
+              >
+                🗑️ Borrar Todas las Respuestas
+              </button>
+            </>
           )}
         </div>
 

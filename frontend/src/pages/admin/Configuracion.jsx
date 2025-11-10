@@ -15,7 +15,8 @@ const Configuracion = () => {
     email_sistema: '',
     telefono_sistema: '',
     direccion_sistema: '',
-    logo: ''
+    logo: '',
+    restringir_respuesta_por_ip: false
   });
   const [loading, setLoading] = useState(true);
   const [guardando, setGuardando] = useState(false);
@@ -43,7 +44,8 @@ const Configuracion = () => {
           email_sistema: data.configuracion.email_sistema || '',
           telefono_sistema: data.configuracion.telefono_sistema || '',
           direccion_sistema: data.configuracion.direccion_sistema || '',
-          logo: data.configuracion.logo || ''
+          logo: data.configuracion.logo || '',
+          restringir_respuesta_por_ip: data.configuracion.restringir_respuesta_por_ip || false
         });
       }
     } catch (error) {
@@ -239,6 +241,29 @@ const Configuracion = () => {
                   placeholder="Dirección del colegio"
                   rows="2"
                 />
+              </div>
+            </div>
+          </div>
+
+          {/* Configuración de Seguridad */}
+          <div className="card mb-4">
+            <div className="card-header">
+              <h3>🔒 Seguridad y Restricciones</h3>
+            </div>
+            <div className="card-body">
+              <div className="form-group">
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={formData.restringir_respuesta_por_ip}
+                    onChange={(e) => setFormData({ ...formData, restringir_respuesta_por_ip: e.target.checked })}
+                  />
+                  <span>Restringir una respuesta por IP</span>
+                </label>
+                <small className="form-help">
+                  Si está activado, cada dirección IP solo podrá responder una vez por encuesta. 
+                  Desactívalo si quieres permitir múltiples respuestas desde el mismo dispositivo/red.
+                </small>
               </div>
             </div>
           </div>
